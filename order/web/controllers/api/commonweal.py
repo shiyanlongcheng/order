@@ -251,6 +251,7 @@ def showCommonweal():
     resp = {'code': 200, 'state': 'SUCCESS', 'url': '', 'title': '', 'original': '', 'msg': '', 'data': []}
     req = request.values
     id = req['id'] if 'id' in req else ''
+    ip = req['ip'] if 'ip' in req else ''
     data_image = []
     if id and len(id) > 0:
         Commonweal_order_info = CommonwealOrder.query.filter(CommonwealOrder.status != 0,
@@ -293,6 +294,9 @@ def showCommonweal():
         resp["data"] = tmp_data
         return jsonify(resp)
     Commonweal_order_info = CommonwealOrder.query.filter(CommonwealOrder.status != 0)
+    if ip and int(ip)-1 > -1:
+        Commonweal_order_info = CommonwealOrder.query.filter(CommonwealOrder.status != 0,
+                                                             CommonwealOrder.commonweal_type_id == (int(ip) - 1))
     data_address = []
     if Commonweal_order_info:
         for item in Commonweal_order_info:
@@ -306,7 +310,7 @@ def showCommonweal():
             tmp_data = {
                 'order_sn': item.order_sn,
                 'id': item.id,
-                'type_id':item.commonweal_type_id,
+                'type_id': item.commonweal_type_id,
                 'mid': item.order_member_id,
                 'rid': item.receipt_member_id,
                 'pay_price': item.pay_price,

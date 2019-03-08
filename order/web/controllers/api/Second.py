@@ -253,6 +253,7 @@ def showSecond():
     resp = {'code': 200, 'state': 'SUCCESS', 'url': '', 'title': '', 'original': '', 'msg': '', 'data': []}
     req = request.values
     id = req['id'] if 'id' in req else ''
+    ip = req['ip'] if 'ip' in req else ''
     data_image = []
     if id and len(id) > 0:
         Second_order_info = SecondOrder.query.filter(SecondOrder.status != 0, SecondOrder.id == id).first()
@@ -294,6 +295,9 @@ def showSecond():
         resp["data"] = tmp_data
         return jsonify(resp)
     Second_order_info = SecondOrder.query.filter(SecondOrder.status != 0)
+    if ip and int(ip)-1 >-1:
+        Second_order_info = SecondOrder.query.filter(SecondOrder.status != 0,
+                                                     SecondOrder.second_type_id == (int(ip) - 1))
     data_address = []
     if Second_order_info:
         for item in Second_order_info:
