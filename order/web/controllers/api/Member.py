@@ -147,12 +147,12 @@ def getMobile():
     if member is False:
         resp['state'] = 'Fail'
         return jsonify(resp)
-    # url = 'http://utf8.api.smschinese.cn/?Uid={0}&Key={1}&smsMob={2}&smsText=验证码:{3}'.format(
-    #     app.config['APP_DATA']['mobilename'], app.config['APP_DATA']['mobilekey'], mobile, code)
-    # r = requests.post(url)
-    # if r.text != '1':
-    #     resp['state'] = 'Fail'
-    #     return jsonify(resp)
+    url = 'http://utf8.api.smschinese.cn/?Uid={0}&Key={1}&smsMob={2}&smsText=验证码:{3}'.format(
+        app.config['APP_DATA']['mobilename'], app.config['APP_DATA']['mobilekey'], mobile, code)
+    r = requests.post(url)
+    if r.text != '1':
+        resp['state'] = 'Fail'
+        return jsonify(resp)
     code_info = Code.query.filter_by(mid=member.id).first()
     if code_info is None:
         code_new = Code()
